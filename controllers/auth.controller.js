@@ -10,6 +10,7 @@ export const signUp = async(req,res,next)=>{
     session.startTransaction();
     try{
         console.log("object",req.body);
+        console.log('Incoming request body:', req.body);
         const  {name, email, password} = req.body;
         const existingUser = await User.findOne({email});
         if(existingUser){
@@ -19,7 +20,7 @@ export const signUp = async(req,res,next)=>{
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPwd = await bcrypt.hash(password, salt);
-        const newUsers = await User.create([{name, email, hashedPwd}],{session});
+        const newUsers = await User.create([{name:name, email:email, password:hashedPwd}],{session});
         const token = jwt.sign({userId: newUsers[0]._id}, JWT_SECRET,{expiresIn:JWT_EXPIRES_IN});
         
         await session.commitTransaction(); 
@@ -28,6 +29,8 @@ export const signUp = async(req,res,next)=>{
             success:true,
             message: 'User created successfully',
             data: {
+                token: token,
+                expiresIn: JWT_EXPIRES_IN,
                 user: newUsers[0]
             }
         });
@@ -39,7 +42,33 @@ export const signUp = async(req,res,next)=>{
     }
 }
 export const signIn = async(req,res,next)=>{
-
+    try{
+        const {email, password} = req.body;
+        const existingUser = await User.findOne({email});
+        if(!existingUser){
+            const error = new Error('User does not exist');
+            error.statusCode = 404;
+            throw error;
+        }
+        const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+        if(!isPasswordValid){   
+            const error = new Error('Invalid password');
+            error.statusCode = 401;
+            throw error;
+        }
+        const token = jwt.sign({userId: existingUser._id}, JWT_SECRET, {expiresIn: JWT_EXPIRES_IN});
+        res.status(200).json({
+            success: true,
+            message: 'User signed in successfully',
+            data: {
+                token: token,
+                expiresIn: JWT_EXPIRES_IN,
+                user: existingUser
+            }
+        });
+    }catch(error){
+        next(error);
+    } 
 }
 export const signOut = async(req,res,next)=>{
 

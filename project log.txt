@@ -1,0 +1,32 @@
+npx --express-generator --git --no-view ./
+npm install --save-dev nodemon
+-delete all directories except node_modules
+#package.json alter
+
+  "type" : "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+
+#~package.json alter
+
+Erase content of app.js
+
+1. Express()
+2. app.listen()
+3. app.use(,Router())
+4. app.get() , app.post, app.put(), app.delete()
+5. Router()
+6. DB-connection Mongodb setup  -Atlas
+7. mongoose, check DB-URI, connectToDb async method with try-catch. mongoose.connect()
+8. new mongoose.Schema()
+9. mongoose.model('tablename',schema)
+10. schema.pre for pre entry calculations.
+
+11. Middleware: A piece of code that try us to intercept something before or after a logic is implemented and receives 4 arguments.
+    err, req, res and next to proceed. This has a adapter design which sticks in between 2 softwares/code routines to check and filter out what shall be done.
+
+12. default middlewares  - json, cookieParser and urlencoded
+13. default export vs named export.
+14. Controller - A piece of code which builds the business logic / or the core logic of what needs to be done with the received data.

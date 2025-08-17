@@ -6,11 +6,10 @@ import { JWT_EXPIRES_IN, JWT_SECRET } from '../config/env.js';
 
 
 export const signUp = async(req,res,next)=>{
+    console.log('SignUp');
     const session = await mongoose.startSession();
     session.startTransaction();
     try{
-        console.log("object",req.body);
-        console.log('Incoming request body:', req.body);
         const  {name, email, password} = req.body;
         const existingUser = await User.findOne({email});
         if(existingUser){
@@ -42,6 +41,7 @@ export const signUp = async(req,res,next)=>{
     }
 }
 export const signIn = async(req,res,next)=>{
+    console.log('SignIn');
     try{
         const {email, password} = req.body;
         const existingUser = await User.findOne({email});
@@ -71,5 +71,5 @@ export const signIn = async(req,res,next)=>{
     } 
 }
 export const signOut = async(req,res,next)=>{
-    
+    console.log('SignOut');
 }

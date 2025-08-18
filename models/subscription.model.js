@@ -63,7 +63,7 @@ const subSchema = mongoose.Schema(
     {timestamp:true}
 );
 //auto calculate renewal date
-subSchema.pre('save', function(){
+subSchema.pre('save', function(next){
     if(!this.renewalDate){
         const periods = {
             'daily':1,
@@ -80,5 +80,5 @@ subSchema.pre('save', function(){
     }
     next();
 });
-const Subscription = mongoose.Model('Subscription',subSchema);
+const Subscription = mongoose.model('Subscription',subSchema);
 export default Subscription;

@@ -25,7 +25,9 @@ const authorize = async (req, res, next) => {
                 message: 'Authorization failed, user not found'
             });
         }
+
         req.user = user; // Attach user to request object
+        
         next(); // Proceed to the next middleware or route handler
     }catch(error){
         console.log('object');

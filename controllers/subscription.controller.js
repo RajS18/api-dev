@@ -1,3 +1,5 @@
+import { SERVER_URL } from '../config/env.js';
+import workflowClient from '../config/workflow.js';
 import Subscription from '../models/subscription.model.js';
 
 export const createSubscription = async (req, res) => {
@@ -6,6 +8,9 @@ export const createSubscription = async (req, res) => {
         ...req.body,
         user: req.user._id // Assuming userId is passed in headers
     });
+    await workflowClient.trigger({
+      url:`${SERVER_URL}/api/v1/workflows/subscriptions/reminder`
+    })
     return res.status(201).json({
         success: true,
         data: sub,

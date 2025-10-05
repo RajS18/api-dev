@@ -1,9 +1,9 @@
 import {Router} from 'express';
-import { sendRemiders } from '../controllers/workflow.controller';
+import { sendRemiders } from '../controllers/workflow.controller.js';
 
 
 const workflowRouter = Router();
 
-userRouter.post('/subscriptions/reminder', sendRemiders);
+workflowRouter.post('/subscriptions/reminder', sendRemiders);
 
 export default workflowRouter;

@@ -1,8 +1,7 @@
-import {Client as WorkflowClient} from '@arcjet/workflow-client';
+import {Client as WorkflowClient} from '@upstash/workflow';
 import {QSTASH_TOKEN, QSTASH_URL} from './env.js';
 
-const workflowClient = new WorkflowClient({
-    token: QSTASH_TOKEN, // QStash token for authentication
+export const workflowClient = new WorkflowClient({
     baseUrl: QSTASH_URL, // Base URL for QStash
+    token: QSTASH_TOKEN, // QStash token for authentication
     });
-export default workflowClient;
